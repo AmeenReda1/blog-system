@@ -1,0 +1,23 @@
+services:
+  campaign-service:
+    restart: always
+    env_file:
+      - .env
+    build:
+      context: .
+      target: ${TARGET:-development}  
+    environment:
+      - NODE_ENV=${TARGET:-development}  # Target stage based on the TARGET 
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./:/home/node/app
+    networks:
+      - blog-network
+
+networks:
+  blog-network:
+    driver: bridge
+    external: true
+    name: blog-network
+
