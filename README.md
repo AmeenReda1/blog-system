@@ -52,20 +52,20 @@ To get started with this application, follow these steps:
 
 ### Authentication
 
-- **Register**: `POST http://localhost:/auth/register`
-- **Login**: `POST http://localhost:/auth/login`
+- **Register**: `POST http://localhost:3000/auth/register`
+- **Login**: `POST http://localhost:3000/auth/login`
 
 ### Blog
 
-- **Create Blog**: `POST http://localhost:/blogs/create`
-- **Update Blog**: `POST http://localhost:/blogs/update/:id`
-- **Get All Blogs**: `GET http://localhost:/blogs/`
-- **Get Blog by ID**: `GET http://localhost:/blogs/:id`
-- **Delete Blog**: `DELETE http://localhost:/blogs/:id` (allowed for admin only)
+- **Create Blog**: `POST http://localhost:3000/blogs/create`
+- **Update Blog**: `POST http://localhost:3000/blogs/update/:id`
+- **Get All Blogs**: `GET http://localhost:3000/blogs/`
+- **Get Blog by ID**: `GET http://localhost:3000/blogs/:id`
+- **Delete Blog**: `DELETE http://localhost:3000/blogs/:id` (allowed for admin only)
 
 ### Tags
 
-- **Create Tag**: `POST http://localhost:/blogs/tags`
+- **Create Tag**: `POST http://localhost:3000/blogs/tags`
 
 ## Technologies Used
 
