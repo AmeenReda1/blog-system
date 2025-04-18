@@ -13,13 +13,14 @@ import { Repository } from 'typeorm';
 import { TagRepository } from './repositories/tag.repository';
 import { Tag } from './entities/tag.entity';
 import { CreateTagDto } from './dto/create-tag.dto';
+import { RedisService } from '../redis/redis.service';
 
 @Injectable()
 export class BlogService {
   constructor(
     private readonly blogRepository: BlogRepository,
     private readonly tagRepository: TagRepository,
-    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+    private readonly redisService: RedisService
   ) {}
 
   async create(createBlogDto: CreateBlogDto, user: User): Promise<Blog> {
@@ -44,7 +45,7 @@ export class BlogService {
     const cacheKey = `blog_${id}`;
 
     try {
-      const cachedBlog = await this.cacheManager.get<Blog>(cacheKey);
+      const cachedBlog = await this.redisService.get<Blog>(cacheKey);
       if (cachedBlog) {
         console.log('get from redis');
         return cachedBlog;
@@ -58,7 +59,7 @@ export class BlogService {
     }
     try {
       console.log('set to redis');
-      await this.cacheManager.set(cacheKey, blog, 1234555);
+      await this.redisService.set(cacheKey, blog);
     } catch (error) {
       console.error(`Redis SET error for key ${cacheKey}:`, error);
     }
@@ -86,7 +87,7 @@ export class BlogService {
 
     const cacheKey = `blog_${id}`;
     try {
-      await this.cacheManager.del(cacheKey);
+      await this.redisService.del(cacheKey);
     } catch (error) {
       console.error(`Redis DEL error for key ${cacheKey}:`, error);
     }
@@ -98,7 +99,7 @@ export class BlogService {
       const deleteResult = await this.blogRepository.softDelete(id);
       console.log('Delete result:', deleteResult);
       const cacheKey = `blog_${id}`;
-      await this.cacheManager.del(cacheKey);
+      await this.redisService.del(cacheKey);
 
       if (deleteResult.affected === 0) {
         return { message: 'Blog was already deleted or not found' };

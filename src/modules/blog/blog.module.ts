@@ -9,13 +9,15 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { BlogRepository } from './repositories/blog.repository';
 import { Tag } from './entities/tag.entity';
 import { TagRepository } from './repositories/tag.repository';
+import { RedisModule } from '../redis/redis.module';
 
 @Module({
-  imports:[
-    TypeOrmModule.forFeature([Blog,Tag]),
-],
+  imports: [
+    TypeOrmModule.forFeature([Blog, Tag]),
+    RedisModule
+  ],
   controllers: [BlogController],
-  providers: [BlogService, BlogRepository, TagRepository,JwtService,JwtAuthGuard,RolesGuard],
-  exports:[BlogService]
+  providers: [BlogService, BlogRepository, TagRepository, JwtService, JwtAuthGuard, RolesGuard],
+  exports: [BlogService]
 })
 export class BlogModule { }

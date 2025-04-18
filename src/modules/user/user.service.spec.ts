@@ -53,7 +53,7 @@ describe('UserService', () => {
 
     const user = await service.create(mockUser);
     
-    expect(saveOneSpy).toHaveBeenCalledWith(expect.any(User)); // Ensure it's called with a User instance
+    expect(saveOneSpy).toHaveBeenCalledWith(expect.any(User)); 
     expect(user).toEqual(returnUser);
 
     saveOneSpy.mockRestore();
