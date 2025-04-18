@@ -13,8 +13,8 @@ To get started with this application, follow these steps:
 1. **Clone the Repository**:
 
    ```bash
-   git clone <repository-url>
-   cd <repository-directory>
+   git clone https://github.com/AmeenReda1/blog-system.git
+   cd blog-system
    ```
 
 2. **Environment Configuration**:
@@ -57,14 +57,6 @@ To get started with this application, follow these steps:
 - **Unit Tests**:
   ```bash
   pnpm run test
-  ```
-- **End-to-End Tests**:
-  ```bash
-  pnpm run test:e2e
-  ```
-- **Test Coverage**:
-  ```bash
-  pnpm run test:cov
   ```
 
 ## Comments
