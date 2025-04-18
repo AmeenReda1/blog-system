@@ -1,33 +1,37 @@
-import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, Matches, MaxLength, MIN, MinLength } from "class-validator";
-import { UserType } from "../entities/user.entity";
+import { IsEmail, IsString, IsEnum, IsOptional, MinLength, IsNotEmpty, Matches } from 'class-validator';
+import { UserType } from '../entities/user.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateUserDto {
-    @IsString()
-    @IsNotEmpty({ message: 'First name is required' })
-    firstName: string;
-
-    @IsString()
-    @IsNotEmpty({ message: 'Last name is required' })
-    lastName: string;
-
+    @ApiProperty({description:'email of the user',example:'test@gmail.com'})
     @IsEmail()
-    @IsNotEmpty({ message: 'Email is required' })
     email: string;
 
+    @ApiProperty({description:'first name of the user',example:'John'})
     @IsString()
-    @IsNotEmpty({ message: 'Password is required' })
-    @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, { message: 'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character' })
+    firstName: string;
+
+    @ApiProperty({description:'last name of the user',example:'Doe'})
+    @IsString()
+    lastName: string;
+
+
+    @ApiProperty({description:'password of the user',example:'passwordAbc#123'})
+    @IsNotEmpty({message:'password is required'})
+    @IsString()
+    @MinLength(6)
+    @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?#&])[A-Za-z\d@$!%#*?&]{6,}$/,{message: 'Password must contain at least one uppercase letter, one lowercase letter, one number and one special character'})
     password: string;
 
-
-    @IsNotEmpty({ message: 'User type is required' })
+    @ApiProperty({description:'user type of the user',example:UserType.EDITOR})
+    @IsNotEmpty({message:`user type is required to be one of the following: ${Object.values(UserType).join(', ')}`})
+    @IsEnum(UserType)
     @IsOptional()
-    @IsEnum(UserType, { message: `User type must be either ${UserType.ADMIN} or ${UserType.EDITOR}` })
-    userType: UserType;
+    userType?: UserType;
 
+    @ApiProperty({description:'mobile number of the user',example:'01234567890'})
+    @IsNotEmpty({message:'mobile number is required'})
     @IsString()
-    @IsNotEmpty({ message: 'Mobile number is required' })
     @MinLength(6, { message: 'Mobile number must be at least 6 characters long' })
-    @MaxLength(12, { message: 'Mobile number must be at most 12 characters long' })
-    mobileNumber: string;
+    mobileNumber?: string;
 }

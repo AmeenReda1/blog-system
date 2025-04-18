@@ -1,4 +1,4 @@
-import { Repository, FindOneOptions, FindManyOptions, SelectQueryBuilder } from 'typeorm';
+import { Repository, FindOneOptions, FindManyOptions, SelectQueryBuilder, IsNull, FindOptionsWhere, UpdateResult } from 'typeorm';
 import { NotFoundException } from '@nestjs/common';
 import { AbstractEntity } from './abstract.entity';
 
@@ -44,10 +44,21 @@ export abstract class AbstractRepository<TEntity extends AbstractEntity> {
     async delete(id: number): Promise<void> {
         await this.entityRepository.delete(id);
     }
-    async softDelete(id: number): Promise<void> {
-        const result = await this.entityRepository.softDelete(id);
-        if (result.affected === 0) {
+    async softDelete(id: number): Promise<UpdateResult> {
+        const existing = await this.entityRepository.findOne({
+            where: { id: id as any }
+        });
+
+        if (!existing) {
             throw new NotFoundException(this.notFoundMsg);
         }
+
+        if (existing.deleted_at) {
+            // Already soft-deleted - return affected: 0
+            return { affected: 0, raw: [], generatedMaps: [] };
+        }
+
+        // Perform the soft delete
+        return this.entityRepository.softDelete(id);
     }
 }

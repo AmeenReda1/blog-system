@@ -1,14 +1,17 @@
-import { AbstractEntity } from "src/common/abstract/abstract.entity";
-import { BeforeInsert, BeforeUpdate, Column, Entity, OneToMany } from "typeorm";
 import * as bcrypt from 'bcrypt';
+
+import { AbstractEntity } from "src/common/abstract/abstract.entity";
 import { Blog } from "src/modules/blog/entities/blog.entity";
+import { BeforeInsert, BeforeUpdate, Column, Entity, OneToMany } from "typeorm";
+
 export enum UserType {
     ADMIN = 'admin',
-    EDITOR = 'editor',
+    EDITOR = 'editor'
 }
-
 @Entity()
-export class User extends AbstractEntity {
+export class User extends AbstractEntity{
+    @Column({ unique: true })
+    email: string;
 
     @Column()
     firstName: string;
@@ -17,25 +20,26 @@ export class User extends AbstractEntity {
     lastName: string;
 
     @Column()
-    email: string;
-
-    @Column()
     password: string;
 
-    @Column()
+    @Column({
+        type: 'enum',
+        enum: UserType,
+        default: UserType.EDITOR
+    })
+    userType: UserType;
+
+    @Column({ unique: true })
     mobileNumber: string;
 
     @OneToMany(() => Blog, (blog) => blog.author)
     blogs: Blog[];
-
-    @Column({ type: 'enum', enum: UserType, default: UserType.EDITOR })
-    userType: UserType;
     @BeforeInsert()
     @BeforeUpdate()
     async hashPassword() {
-        const salt = await bcrypt.genSalt();
-        this.password = await bcrypt.hash(this.password, salt);
+        if (this.password) {
+            const saltRounds = bcrypt.genSaltSync();
+            this.password = bcrypt.hashSync(this.password, saltRounds);
+        }
     }
-
-
 }

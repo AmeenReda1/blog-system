@@ -7,15 +7,15 @@ import { JwtService } from '@nestjs/jwt';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { BlogRepository } from './repositories/blog.repository';
-import { UserModule } from '../user/user.module';
+import { Tag } from './entities/tag.entity';
+import { TagRepository } from './repositories/tag.repository';
 
 @Module({
   imports:[
-    TypeOrmModule.forFeature([Blog]),
-    UserModule
+    TypeOrmModule.forFeature([Blog,Tag]),
 ],
   controllers: [BlogController],
-  providers: [BlogService,BlogRepository,JwtService,JwtAuthGuard,RolesGuard],
+  providers: [BlogService, BlogRepository, TagRepository,JwtService,JwtAuthGuard,RolesGuard],
   exports:[BlogService]
 })
 export class BlogModule { }
