@@ -5,9 +5,9 @@ services:
       - .env
     build:
       context: .
-      target: ${TARGET:-development}  
+      target: ${TARGET:-production}  
     environment:
-      - NODE_ENV=${TARGET:-development}  # Target stage based on the TARGET 
+      - NODE_ENV=${TARGET:-production}  # Target stage based on the TARGET 
     ports:
       - '3000:3000'
     volumes:

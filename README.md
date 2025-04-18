@@ -34,7 +34,7 @@ To get started with this application, follow these steps:
 4. **Run the Application**:
    - For development, use:
      ```bash
-     pnpm run start:dev
+     yarn run start:dev
      ```
    - Alternatively, run the application using Docker:
      ```bash
@@ -56,7 +56,7 @@ To get started with this application, follow these steps:
 
 - **Unit Tests**:
   ```bash
-  pnpm run test
+  yarn run test
   ```
 
 ## Comments
