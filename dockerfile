@@ -1,4 +1,5 @@
-FROM node:lts as builder
+FROM node:22 as builder
+
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -12,7 +13,7 @@ COPY . .
 
 RUN yarn build
 
-FROM node:lts-slim as production
+FROM node:22-slim as production
 
 ENV NODE_ENV production
 USER node
