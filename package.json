@@ -6,8 +6,9 @@
   "private": true,
   "license": "UNLICENSED",
   "engines": {
-  "node": ">=20.0.0"
-},  "scripts": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
@@ -22,6 +23,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@nestjs-modules/ioredis": "^2.0.2",
     "@nestjs/cache-manager": "^3.0.1",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.2",

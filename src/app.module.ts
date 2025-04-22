@@ -8,6 +8,7 @@ import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './modules/user/user.module';
 import * as Joi from 'joi';
 import { config } from 'dotenv';
+import { RedisModule } from '@nestjs-modules/ioredis';
 
 config();
 @Module({
@@ -19,7 +20,14 @@ config();
       }),
       expandVariables: true,
     }),
-
+    RedisModule.forRoot({
+        type: 'single',
+        options:{
+          host: process.env.REDIS_HOST || 'localhost',
+          port: parseInt(process.env.REDIS_PORT || '6379', 10),
+          password: process.env.REDIS_PASSWORD,
+        }
+    }),
     DatabaseModule, AuthModule, BlogModule, UserModule],
   controllers: [AppController],
   providers: [AppService],
